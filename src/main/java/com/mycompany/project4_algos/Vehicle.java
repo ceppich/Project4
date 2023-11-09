@@ -10,7 +10,7 @@ package com.mycompany.project4_algos;
  */
 public class Vehicle {
 
-    public Vehicle(String type, String color, String orient, int yy, int xx){
+    public Vehicle(String type, String color, String orient, int position){
         if (type.charAt(0) == 'c'){
             length = 2;
         } else {
@@ -18,15 +18,13 @@ public class Vehicle {
         }
         name = color;
         orientation = orient.charAt(0);
-        y = yy;
-        x = xx;
+        staticPos = position;
     }
     private String name;
     private char orientation;
     private int length;
     
-    private int y;
-    private int x;
+    private int staticPos;
     
     public char getOrient(){
         return orientation;
@@ -36,13 +34,10 @@ public class Vehicle {
         return length;
     }
     
-    public int getY(){
-        return y;
+    public int getStaticPos(){
+        return staticPos;
     }
     
-    public int getX(){
-        return x;
-    }
     
     public String getName(){
         return name;
