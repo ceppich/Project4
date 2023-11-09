@@ -27,4 +27,26 @@ public class Vehicle {
     
     private int y;
     private int x;
+    
+    public char getOrient(){
+        return orientation;
+    }
+    
+    public int getLength(){
+        return length;
+    }
+    
+    public int getY(){
+        return y;
+    }
+    
+    public int getX(){
+        return x;
+    }
+    
+    public String getName(){
+        return name;
+    }
+    
+    
 }
