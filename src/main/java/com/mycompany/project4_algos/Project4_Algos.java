@@ -1,8 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Project/Maven2/JavaApp/src/main/java/${packagePath}/${mainClassName}.java to edit this template
- */
-
 package com.mycompany.project4_algos;
 import java.util.Scanner;
 import java.util.HashMap;
@@ -11,62 +6,32 @@ import java.util.Queue;
 
 
 /**
+ * MainClass for Project 4
  *
- * @author 13016
+ * @author Jacob Bender and Christian Eppich
+ * @version 1.0
+ * Created 11/9/2023
+ * Summary of Modifications:
+ *
+ * Description: Main class where project4 is written and executed.
  * 
-8
-car
-red
-h
-3
-2
-car
-lime
-h
-1
-1
-truck
-purple
-v
-2
-1
-car
-orange
-v
-5
-1
-truck
-blue
-v
-2
-4
-truck
-yellow
-v
-1
-6
-car
-lightblue
-h
-5
-5
-truck
-aqua
-h
-6
-3
+ *
  */
 public class Project4_Algos {
     
     public static void main(String[] args) {
         Scanner inputScanner = new Scanner(System.in);
 
+        //collect number of vehicles
         int numVehicles = inputScanner.nextInt();
+        
+        //initilize vehicle garage to keep track of cars and position string to map moves
         Vehicle garage[] = new Vehicle[numVehicles];
         String startPositionString = "";
         
         //fill in board based on input
         for (int i = 0; i < numVehicles; i++) {
+            //gather the 5 pieces of information
             String type = inputScanner.next();
             String name = inputScanner.next();
             String orientation = inputScanner.next();
@@ -75,6 +40,7 @@ public class Project4_Algos {
             
             Vehicle myVehicle;
             
+            //only store the coordinate that can change in the position string
             if (orientation.equals("h")) {
                 myVehicle = new Vehicle(type, name, orientation, y);
                 startPositionString += Integer.toString(x);
@@ -91,11 +57,13 @@ public class Project4_Algos {
         //add initial PositionString
         RHQueue.add(startPositionString);
         
-        
+        //create hash map and add initial move string
         HashMap<String, String> prevMoves = new HashMap<>();
         prevMoves.put(startPositionString, "winnerwinnerchickendinnah");
         
         String currentPositionString = "";
+        
+        //work through the Queue that contains all the possible strings
         outer:
         while (!RHQueue.isEmpty()){
             //remove current board to test
@@ -114,7 +82,7 @@ public class Project4_Algos {
                             break;
                         }
                         //create new board reflecting move
-                        String newString = currentPositionString.substring(0,i)+String.valueOf(j)+currentPositionString.substring(i);
+                        String newString = currentPositionString.substring(0,i)+String.valueOf(j)+currentPositionString.substring(i+1);
                         
                         //call finish function
                         if (currentPositionString.charAt(0) == '5'){
@@ -130,7 +98,7 @@ public class Project4_Algos {
                             break;
                         }
                         //create new board reflecting move
-                        String newString = currentPositionString.substring(0,i)+String.valueOf(j-currVehicle.getLength()+1)+currentPositionString.substring(i);
+                        String newString = currentPositionString.substring(0,i)+String.valueOf(j-currVehicle.getLength()+1)+currentPositionString.substring(i+1);
                         
                         //call finish function
                         if (currentPositionString.charAt(0) == '5'){
@@ -147,7 +115,7 @@ public class Project4_Algos {
                             break;
                         }
                         //create new board reflecting move
-                        String newString = currentPositionString.substring(0,i)+String.valueOf(j)+currentPositionString.substring(i);
+                        String newString = currentPositionString.substring(0,i)+String.valueOf(j)+currentPositionString.substring(i+1);
                         
                         //call finish function
                         if (currentPositionString.charAt(0) == '5'){
@@ -163,7 +131,7 @@ public class Project4_Algos {
                             break;
                         }
                         //create new board reflecting move
-                        String newString = currentPositionString.substring(0,i)+String.valueOf(j-currVehicle.getLength()+1)+currentPositionString.substring(i);
+                        String newString = currentPositionString.substring(0,i)+String.valueOf(j-currVehicle.getLength()+1)+currentPositionString.substring(i+1);
                         
                         //call finish function
                         if (currentPositionString.charAt(0) == '5'){
@@ -176,15 +144,20 @@ public class Project4_Algos {
                 }
             }
         }   
+        //print the results
         printMove(currentPositionString, prevMoves, garage, 0);
     }
     
+    //check if potential move is valid or not
     private static boolean checkMove(Vehicle[] garage, String currentPositionString, int y, int x){
+        //itierate through the list of cars to determine if any overlap with possible move
         for (int i = 0; i < garage.length; i++){
             Vehicle curr = garage[i];
+            //determine orientation to properly disect move
             if (curr.getOrient() == 'h'){
                 if (y == curr.getStaticPos()){
                     int dymPos = currentPositionString.charAt(i)-'0';
+                    //check for overlap
                     if (dymPos <= x && x < dymPos+curr.getLength()){
                         return false;
                     }
@@ -192,6 +165,7 @@ public class Project4_Algos {
             } else {
                 if (x == curr.getStaticPos()){
                     int dymPos = currentPositionString.charAt(i)-'0';
+                    //check for overlap
                     if (dymPos <= y && y < dymPos+curr.getLength()){
                         return false;
                     }
@@ -201,18 +175,23 @@ public class Project4_Algos {
         return true;
     }
     
+    
     public static void printMove(String curr, HashMap<String, String> prevMoves, Vehicle []garage, int count){
         //get previous move
         String parent = prevMoves.get(curr);
+        //base case for recursion
         if (parent.equals("winnerwinnerchickendinnah")){
             System.out.println(count + " moves:");
             return;
         }
-        
+        //recursive call
         printMove(parent, prevMoves, garage, count + 1);
-
+        //iterate through both current and parent strings to determine what has changed
         for (int i = 0; i < garage.length; i++){
+            //find character that has changed
             if (parent.charAt(i) != (curr.charAt(i))){
+                
+                //construct string for printing move
                 String outString = garage[i].getName() + " ";
                 if (parent.charAt(i) > curr.charAt(i)) {
                     outString += String.valueOf(parent.charAt(i) - curr.charAt(i)) + " ";

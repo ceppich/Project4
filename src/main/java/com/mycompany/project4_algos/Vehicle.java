@@ -1,12 +1,16 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.project4_algos;
 
 /**
+ * Vehicle class for Project 4
  *
- * @author 13016
+ * @author Jacob Bender and Christian Eppich
+ * @version 1.0
+ * Created 11/9/2023
+ * Summary of Modifications:
+ *
+ * Description: data object that holds static information for each vehicle on board.
+ * 
+ *
  */
 public class Vehicle {
 
